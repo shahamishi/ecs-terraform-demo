@@ -4,16 +4,19 @@
 variable "aws_profile" {
   description = "The profile name that you have configured in the file .aws/credentials"
   type        = string
+  default     = "default"
 }
 
 variable "aws_region" {
   description = "The AWS Region in which you want to deploy the resources"
   type        = string
+  default     = "us-east-1"
 }
 
 variable "environment_name" {
   description = "The name of your environment"
   type        = string
+  default     = "dev"
 
   validation {
     condition     = length(var.environment_name) < 23
@@ -80,15 +83,18 @@ variable "iam_role_name" {
 variable "repository_owner" {
   description = "The name of the owner of the Github repository"
   type        = string
+  default     = "shahamishi"
+
 }
 
 variable "repository_name" {
   description = "The name of the Github repository"
   type        = string
+  default     = "ecs-terraform-demo"
 }
 
 variable "repository_branch" {
   description = "The name of branch the Github repository, which is going to trigger a new CodePipeline excecution"
   type        = string
-  default     = "main"
+  default     = "master"
 }

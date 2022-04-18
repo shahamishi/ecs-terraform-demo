@@ -5,6 +5,11 @@
       AWS CodePipeline for build and deployment
 ========================================================*/
 
+resource "aws_codestarconnections_connection" "aws_codestar_connection" {
+  name          = "Codestar-connection"
+  provider_type = "GitHub"
+}
+
 resource "aws_codepipeline" "aws_codepipeline" {
   name     = var.name
   role_arn = var.pipe_role
@@ -20,17 +25,16 @@ resource "aws_codepipeline" "aws_codepipeline" {
     action {
       name             = "Source"
       category         = "Source"
-      owner            = "ThirdParty"
-      provider         = "GitHub"
+      owner            = "AWS"
+      provider         = "CodeStarSourceConnection"
       version          = "1"
       output_artifacts = ["SourceArtifact"]
 
       configuration = {
-        OAuthToken           = var.github_token
-        Owner                = var.repo_owner
-        Repo                 = var.repo_name
-        Branch               = var.branch
-        PollForSourceChanges = true
+        ConnectionArn    = aws_codestarconnections_connection.aws_codestar_connection.arn
+        FullRepositoryId = "${var.repo_owner}/${var.repo_name}"
+        BranchName       = var.branch
+        
       }
     }
   }

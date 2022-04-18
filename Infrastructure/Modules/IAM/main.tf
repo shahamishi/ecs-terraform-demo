@@ -301,6 +301,23 @@ data "aws_iam_policy_document" "role_policy_devops_role" {
     ]
     resources = ["*"]
   }
+  statement {
+    sid    = "AllowCodestarconnection"
+    effect = "Allow"
+    actions = ["codestar-connections:UseConnection"]
+    resources = ["arn:aws:codestar-connections:us-east-1:298973770113:connection/1c738e34-4e90-4f22-a2af-a58c226a111a"]
+  }  
+  statement {
+    sid = "AllowCodePipelineS3"
+    effect = "Allow"
+    actions = [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:DescribeKey"]
+    resources = ["*"]
+  }
 }
 
 data "aws_iam_policy_document" "role_policy_ecs_task_role" {
